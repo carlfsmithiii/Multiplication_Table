@@ -1,32 +1,109 @@
 <!doctype html>
 <html>
-   <head>
-      <title>Multiplication Table</title>
-      <style>
-         .cell {display: inline-block; width: 30px; height: 30px; text-align: right; border:1px solid gray;}
-         .header {background: lightblue;}
-      </style>
-   </head>
-   <body>
-      <h1>Multiplication Table</h1>
-      <script>
-         // output the header row
-         document.write('<span class="cell header">X</span>');
-         for(let i = 0; i <= 10; i++) {
-            document.write('<span class="cell header">' + i + '</span>');
-         }
-         document.write('<br>');
 
-         // TODO: Write two nested for loops to output the rest of the multiplication table
+<head>
+    <title>Multiplication Table</title>
+    <style>
+        form {
+            display: inline-block;
+        }
 
-         for (let i = 0; i <= 10; i++) {
-             document.write('<span class="cell header">' + i + "</span>");
-             for (let j = 0; j <= 10; j++) {
-                 document.write('<span class="cell">' + (i * j) + '</span>');
-             }
-             document.write('<br>');
-         }
- 
-      </script>
-   </body>
+        .cell {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            text-align: right;
+            border: 1px solid gray;
+        }
+
+        .header {
+            background: lightblue;
+        }
+
+        #table_size_slider {
+            width: 400px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Multiplication Table</h1>
+
+    <form>
+        <fieldset>
+            <legend>Select table size</legend>
+            <label for="table_size" id="table_size_slider_label">10</label>
+            <input type="range" id="table_size_slider" name="table_size" min="1" max="25" step="1" value="10" list="tickmarks">
+            <datalist id="tickmarks">
+                <option value="1" />
+                <option value="2"></option>
+                <option value="3"></option>
+                <option value="4"></option>
+                <option value="5"></option>
+                <option value="6"></option>
+                <option value="7"></option>
+                <option value="8"></option>
+                <option value="9"></option>
+                <option value="10"></option>
+                <option value="11"></option>
+                <option value="12"></option>
+                <option value="13"></option>
+                <option value="14"></option>
+                <option value="15"></option>
+                <option value="16"></option>
+                <option value="17"></option>
+                <option value="18"></option>
+                <option value="19"></option>
+                <option value="20"></option>
+                <option value="21"></option>
+                <option value="22"></option>
+                <option value="23"></option>
+                <option value="24"></option>
+                <option value="25"></option>
+            </datalist>
+        </fieldset>
+    </form>
+    <br>
+
+
+    <script>
+
+        function makeTable(table, tableSize) {
+            // output the header row
+            table.innerHTML="";
+            let text = "";
+            text += '<span class="cell header">X</span>';
+            for (let i = 0; i <= tableSize; i++) {
+                text += '<span class="cell header">' + i + '</span>';
+            }
+            text += '<br>';
+
+            // TODO: Write two nested for loops to output the rest of the multiplication table
+
+            for (let i = 0; i <= tableSize; i++) {
+                text += '<span class="cell header">' + i + "</span>";
+                for (let j = 0; j <= tableSize; j++) {
+                    text += '<span class="cell">' + (i * j) + '</span>';
+                }
+                text += '<br>';
+            }
+            table.innerHTML = text;
+        }
+        
+        const table = document.createElement("div");
+        document.body.appendChild(table);
+        let tableSize = 10;
+        const tableSizeSlider = document.getElementById("table_size_slider");
+        const tableSizeSliderLabel = document.getElementById("table_size_slider_label");
+        tableSizeSlider.value = tableSize;
+        tableSizeSliderLabel.textContent = tableSize;
+        makeTable(table, tableSize);
+        tableSizeSlider.addEventListener('input', function () {
+            console.log(tableSizeSlider.value);
+            tableSizeSliderLabel.textContent = tableSizeSlider.value;
+            makeTable(table, tableSizeSlider.value);
+        });
+    </script>
+</body>
+
 </html>
