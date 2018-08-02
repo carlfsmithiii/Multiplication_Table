@@ -4,6 +4,10 @@
 <head>
     <title>Multiplication Table</title>
     <style>
+        :root {
+            --header-color: lightblue;
+        }
+
         form {
             display: inline-block;
         }
@@ -17,7 +21,7 @@
         }
 
         .header {
-            background: lightblue;
+            background: var(--header-color);
         }
 
         #table_size_slider {
@@ -33,7 +37,7 @@
         <fieldset>
             <legend>Select table size</legend>
             <label for="table_size" id="table_size_slider_label">10</label>
-            <input type="range" id="table_size_slider" name="table_size" min="1" max="25" step="1" value="10" list="tickmarks">
+            <input type="range" id="table_size_slider" name="table_size" min="1" max="25" step="1" list="tickmarks">
             <datalist id="tickmarks">
                 <option value="1" />
                 <option value="2"></option>
@@ -62,15 +66,17 @@
                 <option value="25"></option>
             </datalist>
         </fieldset>
+        <fieldset>
+            <legend>Select Color</legend>
+            <input type="color" value="#ADD8E6" id="header_color_picker">
+        </fieldset>
     </form>
     <br>
 
 
     <script>
-
         function makeTable(table, tableSize) {
             // output the header row
-            table.innerHTML="";
             let text = "";
             text += '<span class="cell header">X</span>';
             for (let i = 0; i <= tableSize; i++) {
@@ -89,19 +95,36 @@
             }
             table.innerHTML = text;
         }
-        
-        const table = document.createElement("div");
-        document.body.appendChild(table);
-        let tableSize = 10;
+
+        // Controls
         const tableSizeSlider = document.getElementById("table_size_slider");
         const tableSizeSliderLabel = document.getElementById("table_size_slider_label");
-        tableSizeSlider.value = tableSize;
-        tableSizeSliderLabel.textContent = tableSize;
-        makeTable(table, tableSize);
+        const colorPicker = document.getElementById("header_color_picker");
+
+        // Initial Values
+        const initialTableSize = 10;
+        const initialColor = '#ADD8E6';
+
+        // Initialize Table
+        const table = document.createElement("div");
+        document.body.appendChild(table);
+        makeTable(table, initialTableSize);
+
+        // Initialize tableSizeSlider and ColorPicker
+        tableSizeSlider.value = initialTableSize;
+        tableSizeSliderLabel.textContent = initialTableSize;
+        colorPicker.value = initialColor;
+
+
+        // Event Listeners
         tableSizeSlider.addEventListener('input', function () {
-            console.log(tableSizeSlider.value);
             tableSizeSliderLabel.textContent = tableSizeSlider.value;
             makeTable(table, tableSizeSlider.value);
+        });
+
+        colorPicker.addEventListener('input', function () {
+            const color = colorPicker.value;
+            document.documentElement.style.setProperty('--header-color', color);
         });
     </script>
 </body>
