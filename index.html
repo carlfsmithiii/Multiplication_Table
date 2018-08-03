@@ -75,25 +75,43 @@
 
 
     <script>
-        function makeTable(table, tableSize) {
-            // output the header row
-            let text = "";
-            text += '<span class="cell header">X</span>';
-            for (let i = 0; i <= tableSize; i++) {
-                text += '<span class="cell header">' + i + '</span>';
+        function makeTable(tableSize) {
+
+            function makeHeaderSpan(contents) {
+                return makeSpan(contents, "cell", "header");
             }
-            text += '<br>';
+
+            function makeCellSpan(contents) {
+                return makeSpan(contents, "cell");
+            }
+
+            function makeSpan(contents, ...classAssignments) {
+                const cellSpan = document.createElement("span");
+                for (let classAssignment of classAssignments) {
+                    cellSpan.classList.add(classAssignment);
+                }
+                cellSpan.textContent = contents;
+                return cellSpan;
+            }
+            const tableDiv = document.createElement("div");
+            tableDiv.appendChild(makeHeaderSpan("X"));
+            for (let i = 0; i <= tableSize; i++) {
+                tableDiv.appendChild(makeHeaderSpan(i));
+            }
+            tableDiv.appendChild(document.createElement("br"));
 
             // TODO: Write two nested for loops to output the rest of the multiplication table
 
             for (let i = 0; i <= tableSize; i++) {
-                text += '<span class="cell header">' + i + "</span>";
+                tableDiv.appendChild(makeHeaderSpan(i));
                 for (let j = 0; j <= tableSize; j++) {
-                    text += '<span class="cell">' + (i * j) + '</span>';
+                    tableDiv.appendChild(makeCellSpan(i * j));
                 }
-                text += '<br>';
+                tableDiv.appendChild(document.createElement("br"))
             }
-            table.innerHTML = text;
+            const table = document.getElementById("table");
+            tableDiv.id = "table";
+            table.parentNode.replaceChild(tableDiv, table);
         }
 
         // Controls
@@ -107,8 +125,9 @@
 
         // Initialize Table
         const table = document.createElement("div");
+        table.id = "table";
         document.body.appendChild(table);
-        makeTable(table, initialTableSize);
+        makeTable(initialTableSize);
 
         // Initialize tableSizeSlider and ColorPicker
         tableSizeSlider.value = initialTableSize;
@@ -119,7 +138,7 @@
         // Event Listeners
         tableSizeSlider.addEventListener('input', function () {
             tableSizeSliderLabel.textContent = tableSizeSlider.value;
-            makeTable(table, tableSizeSlider.value);
+            makeTable(tableSizeSlider.value);
         });
 
         colorPicker.addEventListener('input', function () {
